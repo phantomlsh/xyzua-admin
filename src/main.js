@@ -5,6 +5,14 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+import axios from 'axios'
+axios.defaults.withCredentials = true
+Vue.prototype.$ajax = axios
+
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
+
 new Vue({
   router,
   store,

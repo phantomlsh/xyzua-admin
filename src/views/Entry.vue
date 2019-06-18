@@ -1,9 +1,14 @@
 <template>
-  <div class="entry" @click="go">
+  <div class="entry">
     <CheckAdmin @success="pass=true;" />
     <h1>XYZUA</h1>
     <h2>Admin Page</h2>
-    <p>{{tip}}</p>
+    <p v-if="!pass">Authenticating</p>
+    <div class="menu" v-if="pass">
+      <el-button @click="go('model')" type="primary" round>Model</el-button>
+      <el-button @click="go('count')" type="primary" round>Count</el-button>
+      <el-button @click="go('filter')" type="primary" round>Filter</el-button>
+    </div>
   </div>
 </template>
 
@@ -20,21 +25,14 @@ export default {
       pass: false,
     }
   },
-  computed: {
-    tip: function() {
-      if (this.pass) return "Tap anywhere to continue";
-      else return "Authenticating ... ";
-    }
-  },
   methods: {
-    go: function() {
+    go: function(path) {
       if (!this.pass) return;
-      this.$router.push('/menu');
+      this.$router.push('/' + path);
     }
   }
 }
 </script>
-
 <style scoped>
 div.entry {
   color: #409EFF;
@@ -44,5 +42,13 @@ div.entry {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+div.menu {
+  margin-top: 30px;
+  width: 90%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 </style>

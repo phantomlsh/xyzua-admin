@@ -8,13 +8,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'entry',
+      name: 'Entry',
       component: Entry,
       alias: '/entry'
     },
     {
       path: '/model',
-      name: 'model',
+      name: 'Model',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -24,16 +24,16 @@ export default new Router({
     },
     {
       path: '/record',
-      name: 'record',
+      name: 'Record',
       component: function () { 
         return import('./views/Record.vue')
       }
     },
     {
-      path: '/filter',
-      name: 'filter',
+      path: '/query',
+      name: 'Query',
       component: function () { 
-        return import('./views/Filter.vue')
+        return import('./views/Query.vue')
       }
     },
   ]

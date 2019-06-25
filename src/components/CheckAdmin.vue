@@ -4,7 +4,7 @@
 export default {
   name: 'CheckAdmin',
   created: function() {
-    this.check();
+    setTimeout(this.check, 500);
     setInterval(this.check, 60000);
   },
   methods: {
@@ -20,7 +20,7 @@ export default {
           if (!resp.data.Success) this.exit();
           else {
             if (resp.data.Message.Role != "ADMIN") this.exit();
-            else this.$emit("success"); // emit event
+            else this.$emit("success", resp.data.Message.Raw.Expire); // emit event
             // update token
             storage["XYZUA_Token"] = resp.data.Message.Raw.Token;
           }
@@ -30,7 +30,7 @@ export default {
     exit: function() {
       this.$message.error("Authentication Error!");
       setTimeout(function() {
-        // window.location.href = "../index.html";
+        window.location.href = "../index.html";
       }, 1000);
     }
   }

@@ -5,6 +5,9 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+import model from './model'
+Vue.prototype.$model = model
+
 import axios from 'axios'
 axios.defaults.withCredentials = true
 Vue.prototype.$ajax = axios

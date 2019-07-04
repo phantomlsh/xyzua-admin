@@ -41,12 +41,12 @@ export default {
       newFilter: {
         key: '',
         operator: '=',
-        value: '',
+        value: ''
       }
     }
   },
   computed: {
-    ...mapState(['currTable', 'queryString']),
+    ...mapState(['currTable', 'queryString'])
   },
   created: function() {
     this.filters = this.decode(this.queryString);
@@ -57,7 +57,7 @@ export default {
       this.filters.push({
         key: this.newFilter.key,
         operator: this.newFilter.operator,
-        value: this.newFilter.value,
+        value: this.newFilter.value
       })
       this.newFilter = {key: '', operator: '=', value: ''}
     },
@@ -77,7 +77,7 @@ export default {
         f.push({
           key: cond[0],
           operator: this.mapOperator(cond[1]),
-          value: q[1],
+          value: q[1]
         })
       }
       return f;

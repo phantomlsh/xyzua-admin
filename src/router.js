@@ -36,5 +36,19 @@ export default new Router({
         return import('./views/Query.vue')
       }
     },
+    {
+      path: '/count',
+      name: 'Count',
+      component: function () { 
+        return import('./views/Count.vue')
+      }
+    },
+    {
+      path: '/print',
+      name: 'Print',
+      component: function () { 
+        return import('./views/Print.vue')
+      }
+    }
   ]
 })

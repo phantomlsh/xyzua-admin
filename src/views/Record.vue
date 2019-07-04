@@ -3,23 +3,43 @@
     <h1>Record</h1>
     <div class="edit" v-for="r in mapRecord">
       <span style="margin-right: 10px;">{{r.key}}:</span>
-      <el-input v-model="r.value" :disabled="r.key == 'Id' || $model.type[currTable][r.key] == 'disable'"></el-input>
+      <el-input v-model="r.value"
+        v-if="$model.type[currTable][r.key] != 'int' && $model.type[currTable][r.key] != 'time'"
+        :disabled="$model.type[currTable][r.key] == 'disable'"
+      >
+        <el-button @click="auto(r)" slot="append" icon="el-icon-menu"></el-button>
+      </el-input>
+      <el-input-number v-model="r.value"
+        v-if="$model.type[currTable][r.key] == 'int'"
+        :disabled="r.key == 'Id'"
+        style="min-width: 220px;width: 50%;"
+      ></el-input-number>
+      <el-date-picker v-model="r.value"
+        v-if="$model.type[currTable][r.key] == 'time'"
+        type="datetime"
+        placeholder="Select date and time"
+      ></el-date-picker>
     </div>
     <div class="row">
       <el-button style="margin: 10px;" @click="save" type="primary" plain>Save to Local</el-button>
       <el-button style="margin: 10px;" v-if="record.Id" @click="update" type="primary">Save and Update</el-button>
       <el-button style="margin: 10px;" @click="create" type="success">Save and Create</el-button>
-      <el-button style="margin: 10px;" @click="remove" type="danger">Delete</el-button>
+      <el-button style="margin: 10px;" v-if="record.Id" @click="remove" type="danger">Delete</el-button>
     </div>
   </div>
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex'
 
-function exceptId(obj) {
+function processRecord(obj) {
   var res = {};
   for (let key in obj) {
     if (key == "Id") continue;
+    if (obj[key] instanceof Date) {
+      res[key] = Math.floor(obj[key].getTime() / 1000);
+      console.log(key + res[key]);
+      continue;
+    }
     res[key] = obj[key];
   }
   return res;
@@ -29,7 +49,7 @@ export default {
   name: 'Record',
   data() {
     return {
-      mapRecord: [],
+      mapRecord: []
     }
   },
   created: function() {
@@ -38,10 +58,10 @@ export default {
   },
   watch: {
     currTable() {this.mapping();},
-    record() {this.mapping();},
+    record() {this.mapping();}
   },
   computed: {
-    ...mapState(['record', 'currTable']),
+    ...mapState(['record', 'currTable'])
   },
   methods: {
     ...mapMutations(['setRecord']),
@@ -54,6 +74,18 @@ export default {
           value: this.record[k]
         })
       }  
+    },
+    auto(r) {
+      let type = this.$model.type[this.currTable][r.key];
+      let random = type.match(/random\((\d+)\)/);
+      if (random) {
+        r.value = this.$util.randomString(random[1]);
+        return ;
+      }
+      if (type == "password") {
+        r.value = this.$util.hash(r.value, "XYZUA_Powered_by_Phantomlsh");
+        return ;
+      }
     },
     save() {
       let r = {};
@@ -69,12 +101,11 @@ export default {
       this.$ajax
         .get("../v1/" + this.currTable + "/" + this.record.Id, {
           params: {
-            admintoken: storage["XYZUA_Token"],
+            ...this.$model.addParams()
           }
         })
         .then(resp => {
           this.setRecord(resp.data);
-          console.log(resp.data);
           this.$message({message: "Get Record!", type: "success"});
         })
         .catch(() => {
@@ -87,14 +118,10 @@ export default {
         return;
       }
       this.save();
-      if (!this.record.Id) {
-        this.$message.error("No Id, go to Model");
-        return;
-      }
       this.$ajax
         .put("../v1/" + this.currTable + "/" + this.record.Id, {
-          ...exceptId(this.record),
-          ...this.$model.addParams(),
+          ...processRecord(this.record),
+          ...this.$model.addParams()
         })
         .then(resp => {
           this.$message(resp.data);
@@ -112,15 +139,14 @@ export default {
       this.save();
       this.$ajax
         .post("../v1/" + this.currTable, {
-          ...exceptId(this.record),
-          ...this.$model.addParams(),
+          ...processRecord(this.record),
+          ...this.$model.addParams()
         })
         .then(resp => {
           if (typeof resp.data == 'string') {
             this.$message.error(resp.data);
           } else {
             this.setRecord(resp.data);
-            console.log(resp.data);
             this.get();
             this.$message({message: 'Created!', type: 'success'});
           }
@@ -130,14 +156,10 @@ export default {
         })
     },
     remove() {
-      if (!this.record.Id) {
-        this.$message.error("No Id, go to Model");
-        return;
-      }
       this.$ajax
         .delete("../v1/" + this.currTable + '/' + this.record.Id, {
           params: {
-            ...this.$model.addParams(),
+            ...this.$model.addParams()
           }
         })
         .then(resp => {
@@ -151,7 +173,6 @@ export default {
     checkForm() { // check blank form
       for (let i in this.mapRecord) {
         let r = this.mapRecord[i];
-        console.log(r) ;
         if (r.key == 'Id') continue;
         if (r.value === '' || typeof r.value == 'undefined') return false;
       }
@@ -174,7 +195,7 @@ div.edit {
   width: 100%;
   height: 30px;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
   margin: 10px 0;
 }

@@ -8,6 +8,9 @@ Vue.config.productionTip = false
 import model from './model'
 Vue.prototype.$model = model
 
+import util from './util'
+Vue.prototype.$util = util
+
 import axios from 'axios'
 axios.defaults.withCredentials = true
 Vue.prototype.$ajax = axios

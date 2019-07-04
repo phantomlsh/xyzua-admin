@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: 'Entry',
+  name: 'Entry'
 }
 </script>
 <style scoped>

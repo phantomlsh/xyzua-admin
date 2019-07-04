@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="bar">
     <CheckAdmin @success="refresh"/>
     <div class="bar top" v-if="isPass">
       <div class="title">XYZUA - ADMIN</div>
@@ -12,6 +12,7 @@
           <el-dropdown-item command="Model">Model</el-dropdown-item>
           <el-dropdown-item command="Count">Count</el-dropdown-item>
           <el-dropdown-item command="Query">Query</el-dropdown-item>
+          <el-dropdown-item command="Print">Print</el-dropdown-item>
           <el-dropdown-item command="Record">Record</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -47,14 +48,14 @@ export default {
     return {
       expire: 2147483647,
       restTime: 0,
-      isPass: false,
+      isPass: false
     }
   },
   created: function() {
     setInterval(this.setRestTime, 1000);
   },
   computed: {
-    ...mapState(['currTable']),
+    ...mapState(['currTable'])
   },
   methods: {
     ...mapMutations(['setCurrTable', 'setRecord', 'setRecords']),
@@ -84,6 +85,12 @@ export default {
 </script>
 
 <style scoped>
+@media print {
+  div#bar {
+    display: none;
+  }
+}
+
 div.bar {
   position: fixed;
   z-index: 10;

@@ -1,5 +1,5 @@
 <template>
-  <div class="menu">
+  <div class="model">
     <div class="container">
       <p>QueryString: {{queryString}}</p>
       <el-button plain @click="$router.push('/query');">Set Query</el-button>
@@ -13,7 +13,6 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import CheckAdmin from '@/components/CheckAdmin.vue'
 import Table from '@/components/Table.vue'
 
 export default {
@@ -22,7 +21,7 @@ export default {
     Table
   },
   computed: {
-    ...mapState(['currTable', 'queryString']),
+    ...mapState(['currTable', 'queryString'])
   },
   methods: {
     ...mapMutations(['setCurrTable', 'setRecords']),
@@ -32,7 +31,7 @@ export default {
           params: {
             ...this.$model.addParams(),
             query: this.queryString,
-            fields: this.$model.defaultFields[this.currTable],
+            fields: this.$model.defaultFields[this.currTable]
           }
         })
         .then(resp => {
@@ -45,7 +44,7 @@ export default {
         .catch(() => {
           this.$message.error("Error!");
         });
-    },
+    }
   }
 }
 </script>

@@ -37,29 +37,29 @@ MODEL.type['user'] = {
   Info: 'json',
   Role: 'string',
   Authority: 'int',
-  Token: 'random(64)',
-  Expire: 'time',
+  Token: 'random(32)',
+  Expire: 'time'
 }
 MODEL.type['ticket'] = {
   Id: 'int',
-  Ticket: 'random(32)',
+  Ticket: 'random(20)',
   Tag: 'string',
   Info: 'json',
-  Expire: 'time',
+  Expire: 'time'
 }
 MODEL.type['mark'] = {
   Id: 'int',
   Type: 'string',
   Identity: 'string',
-  Timestamp: 'disable',
+  Timestamp: 'disable'
 }
-MODEL.type['code'] = {
+MODEL.type['app'] = {
   Id: 'int',
   Appname: 'string',
   Secret: 'random(64)',
   Callback: 'string'
 }
-MODEL.type['app'] = {
+MODEL.type['code'] = {
   Id: 'int',
   Userid: 'int',
   Appid: 'int',

@@ -23,7 +23,7 @@ export default {
       let fields = this.$model.defaultFields[this.currTable];
       if (fields) return fields.split(',');
       else return [];
-    },
+    }
   },
   methods: {
     ...mapMutations(['setRecord']),

@@ -22,7 +22,7 @@ export default new Vuex.Store({
     },
     setRecords (state, records) {
       state.records = records;
-    },
+    }
   },
   actions: {
 

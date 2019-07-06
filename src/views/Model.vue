@@ -31,7 +31,8 @@ export default {
           params: {
             ...this.$model.addParams(),
             query: this.queryString,
-            fields: this.$model.defaultFields[this.currTable]
+            fields: this.$model.defaultFields[this.currTable],
+            limit: 1000,
           }
         })
         .then(resp => {

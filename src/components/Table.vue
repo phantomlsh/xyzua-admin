@@ -1,5 +1,5 @@
 <template>
-  <el-table @row-click="goEdit" :data="records" style="width: 100%" @selection-change="handleSelectionChange">
+  <el-table @row-click="goEdit" :data="records" style="width: 100%;" @selection-change="handleSelectionChange">
     <el-table-column type="selection" width="55">
     </el-table-column>
     <el-table-column v-for="c in column" :property="c" :label="c" :width="c == 'Id' ? 60 : ''">

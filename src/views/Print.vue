@@ -16,11 +16,10 @@
       <el-button type="primary" @click="getRecords">PRINT</el-button>
     </div>
     <div class="print">
-      <div v-for="r in printRecords" v-html="printCard(r)"></div>
+      <div class="card" v-for="r in printRecords" v-html="printCard(r)"></div>
     </div>
   </div>
 </template>
-
 <script>
 import { mapState } from 'vuex'
 import QRCode from 'qrcodejs2'
@@ -63,7 +62,8 @@ export default {
         .get("../v1/" + this.currTable, {
           params: {
             ...this.$model.addParams(),
-            query: this.queryString
+            query: this.queryString,
+            limit: 1000,
           }
         })
         .then(resp => {
@@ -108,7 +108,7 @@ export default {
       for (let i in qrcodes) {
         let id = qrcodes[i];
         let t = id.match(/qrcode(.*)/)
-        new QRCode(document.getElementById(id), { 
+        new QRCode(document.getElementById(id), {
           text: url + t[1],
           width: qrsize,
           height: qrsize
@@ -118,21 +118,26 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 @media print {
   div.menu {
     display: none;
   }
 }
+
+div.card {
+  page-break-inside: avoid;
+  float: left;
+}
+
 div.print {
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
 }
+
 div.menu {
   width: 100%;
 }
+
 div.row {
   display: flex;
   width: 90%;

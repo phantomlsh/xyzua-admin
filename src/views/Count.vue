@@ -55,7 +55,8 @@ export default {
           params: {
             ...this.$model.addParams(),
             query: this.queryString,
-            fields: 'Id'
+            fields: 'Id',
+            limit: 10000
           }
         })
         .then(resp => {
